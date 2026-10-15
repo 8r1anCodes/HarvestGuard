@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Climate Advisor · ShambaShield AI{% endblock %}
+{% block content %}
+<main class="page">
+  <h1 data-sw="Mshauri wa Hali ya Hewa">Climate Advisor</h1>
+  <p class="muted">7-day outlook for {{ c.place }}.
+    {% if c.live %}Live data from Open-Meteo.{% else %}Offline, showing sample data.{% endif %}</p>
+  <form method="get" class="form">
+    <label class="full">Location
+      <select name="place" onchange="this.form.submit()">{% for p in places %}<option {{ 'selected' if p == c.place }}>{{ p }}</option>{% endfor %}</select></label>
+  </form>
+  {% for level, title, advice in c.alerts %}
+  <div class="result risk-{{ level }}"><h2>{{ title }}</h2><p>{{ advice }}</p></div>
+  {% endfor %}
+  <section class="panel">
+    <h2>Rain per day (mm)</h2>
+    <div class="chart">
+      {% for d in range(7) %}
+      <div><i style="height: {{ [c.rain[d] * 2, 100]|min }}%"></i><span>{{ c.rain[d]|round(0)|int }}mm<br>{{ c.days[d][-5:] }}</span></div>
+      {% endfor %}
+    </div>
+    <p class="muted" style="margin-top:1rem">Total {{ c.total }} mm · Average high {{ c.avg_max }}°C</p>
+  </section>
+</main>
+{% endblock %}

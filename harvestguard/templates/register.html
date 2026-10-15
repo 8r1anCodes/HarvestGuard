@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Register · ShambaShield AI{% endblock %}
+{% block content %}
+<main class="auth">
+  <h1 data-sw="Jisajili">Create your farmer account</h1>
+  <p class="muted">Free. Takes under a minute.</p>
+  <form method="post" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>Full name
+      <input type="text" name="full_name" value="{{ f.get('full_name', '') }}" required autofocus></label>
+    <label>Phone number
+      <input type="tel" name="phone" value="{{ f.get('phone', '') }}" placeholder="0712345678" required></label>
+    <label>County
+      <select name="county" required>
+        <option value="">Choose your county</option>
+        {% for c in counties %}<option {{ 'selected' if c == f.get('county') }}>{{ c }}</option>{% endfor %}
+      </select></label>
+    <label>Password (at least 6 characters)
+      <input type="password" name="password" minlength="6" required></label>
+    <button class="btn btn-primary">Create account</button>
+  </form>
+  <p class="auth-note">Already registered? <a href="{{ url_for('login') }}">Log in</a></p>
+</main>
+{% endblock %}

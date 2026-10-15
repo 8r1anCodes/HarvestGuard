@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Harvest Advisor · ShambaShield AI{% endblock %}
+{% block content %}
+<main class="page">
+  <h1 data-sw="Mshauri wa Mavuno">Yield & Harvest Advisor</h1>
+  <p class="muted">Enter what you planted and when. We'll estimate your harvest window.</p>
+  <form method="post" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>Crop
+      <select name="crop_id">{% for c in crops %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}</select></label>
+    <label>Planting date
+      <input type="date" name="planting_date" value="{{ today }}" required></label>
+    <label class="full">Location (for weather warnings)
+      <select name="place">{% for p in places %}<option {{ 'selected' if p == default_place }}>{{ p }}</option>{% endfor %}</select></label>
+    <button class="btn btn-primary">Estimate harvest</button>
+  </form>
+  {% if result %}
+  <div class="result"><h2>Harvest {{ result.start.strftime('%d %b') }} to {{ result.end.strftime('%d %b %Y') }}</h2>
+    <p>{{ result.crop.name }} usually takes about {{ result.crop.days_to_harvest }} days from planting.</p></div>
+  <div class="result"><h2>Tips to improve production</h2><ul>{% for t in result.tips %}<li>{{ t }}</li>{% endfor %}</ul></div>
+  {% for level, title, advice in result.warnings %}
+  <div class="result risk-{{ level }}"><h2>Warning: {{ title }}</h2><p>{{ advice }}</p></div>
+  {% endfor %}
+  {% endif %}
+</main>
+{% endblock %}

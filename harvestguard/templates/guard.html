@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}ShambaShield AI{% endblock %}
+{% block content %}
+<main class="page">
+  <h1 data-sw="Ulinzi wa Mavuno">Harvest Guard</h1>
+  <p class="muted">Enter your harvest. We'll estimate spoilage, your possible loss, and what to do.</p>
+  <form method="post" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>Crop
+      <select name="crop_id">{% for c in crops %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}</select></label>
+    <label>Quantity harvested (kg)
+      <input type="number" name="quantity" value="420" min="1" required></label>
+    <label>Distance to market (km)
+      <input type="number" name="distance" value="6" min="0" required></label>
+    <label>Days until you can sell
+      <input type="number" name="days_to_sell" value="3" min="0" step="0.5" required></label>
+    <label class="check"><input type="checkbox" name="cold"> I have cold or cool storage</label>
+    <label class="check"><input type="checkbox" name="rain" checked> Wet weather expected</label>
+    <button class="btn btn-primary">Check spoilage risk</button>
+  </form>
+  {% if result %}
+  <div class="result risk-{{ result.level }}">
+    <span class="pill {{ result.level }}">{{ result.level|upper }} RISK · {{ result.risk }}%</span>
+    <p class="big">KES {{ '{:,}'.format(result.loss|int) }} <small class="muted">possible loss</small></p>
+    <p>About {{ result.at_risk }} kg of {{ result.qty|int }} kg of {{ result.crop.name|lower }} is at risk.</p>
+    <h2 style="margin-top:1rem">Do this: {{ {'sell':'SELL NOW','store':'STORE','transport':'TRANSPORT TO A BETTER MARKET'}[result.rec] }}</h2>
+    <ul>{% for r in result.reasons %}<li>{{ r }}</li>{% endfor %}</ul>
+  </div>
+  <a href="{{ url_for('dashboard') }}" class="btn btn-primary">View on dashboard</a>
+  {% endif %}
+</main>
+{% endblock %}

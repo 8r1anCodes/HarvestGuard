@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Crop-Stage Risk · ShambaShield AI{% endblock %}
+{% block content %}
+<main class="page">
+  <h1 data-sw="Hatari kulingana na hatua ya zao">Crop-stage risk check</h1>
+  <p class="muted">Forecast for {{ farm.county }} County, combined with your crop's growth stage and field conditions.</p>
+  {% if error %}<div class="flash error">{{ error }}</div>{% endif %}
+  <form method="post" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>Crop <select name="crop">{% for c in crops %}<option>{{ c }}</option>{% endfor %}</select></label>
+    <label>Planting date <input type="date" name="planting_date" max="{{ today }}" required></label>
+    <label>Soil type <select name="soil"><option value="loam">Loam</option><option value="clay">Clay</option><option value="sandy">Sandy</option></select></label>
+    <label>Field drainage <select name="drainage"><option value="unknown">Not sure</option><option value="good">Good (water drains fast)</option><option value="moderate">Moderate</option><option value="poor">Poor (water stays)</option></select></label>
+    <label>Crop condition today <select name="condition"><option value="unknown">Not checked</option><option value="healthy">Healthy</option><option value="yellowing">Yellowing leaves</option><option value="wilting">Wilting</option><option value="standing_water">Standing water in field</option></select></label>
+    <label class="check"><input type="checkbox" name="irrigation"> I can irrigate</label>
+    <button class="btn btn-primary">Check my crop risk</button>
+  </form>
+
+  {% if result %}
+  <div class="result"><h2>{{ result.crop }}, day {{ result.day }}: {{ result.stage }}</h2>
+    <p class="muted">{% if result.live %}Live forecast from Open-Meteo.{% else %}Forecast unavailable: DEMONSTRATION data shown.{% endif %}</p></div>
+  {% if result.contact_extension %}
+  <div class="result risk-high"><h2>Contact your extension officer</h2>
+    <p>Risk is high or your crop is already showing signs of stress. Get a field assessment before spending money.</p></div>
+  {% endif %}
+  {% for h in result.hazards %}
+  <div class="result risk-{{ h.level }}">
+    <span class="pill {{ h.level }}">{{ h.level|upper }}</span>
+    <h2 style="margin-top:.4rem">{{ h.title }}</h2>
+    <p><b>Why:</b></p><ul>{% for f in h.factors %}<li>{{ f }}</li>{% endfor %}</ul>
+    {% if h.inspect %}<p style="margin-top:.6rem"><b>Inspect your field for:</b></p><ul>{% for i in h.inspect %}<li>{{ i }}</li>{% endfor %}</ul>{% endif %}
+    {% if h.actions %}<p style="margin-top:.6rem"><b>Preventive actions to consider:</b></p>
+      <ul class="checklist">{% for a in h.actions %}<li><label><input type="checkbox"> {{ a }}</label></li>{% endfor %}</ul>{% endif %}
+  </div>
+  {% endfor %}
+  <div class="result"><h2>Missing information</h2><ul>{% for m in result.missing %}<li>{{ m }}</li>{% endfor %}</ul></div>
+  <p class="disclaimer">{{ result.disclaimer }}</p>
+  <p class="disclaimer">Rule status: {{ meta.status }}</p>
+  {% endif %}
+</main>
+{% endblock %}

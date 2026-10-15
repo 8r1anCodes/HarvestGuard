@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-text">
+    <h1 data-sw="Jua hatari ya hali ya hewa kwa zao lako kabla haijafika.">Know the weather risk to your crop before it hits.</h1>
+    <p class="lead" data-sw="HarvestGuard inatabiri hatari ya mazao kuharibika, inakadiria hasara kwa shilingi, na inakuambia: uza, hifadhi, au safirisha.">
+      ShambaShield AI turns the forecast into crop-stage risks, preventive steps, and recovery options you can compare.
+    </p>
+    <div class="cta-row">
+      <a href="{{ url_for('register') }}" class="btn btn-primary" data-sw="Jisajili bure">Register free</a>
+      <a href="#how" class="btn btn-ghost" data-sw="Jinsi inavyofanya kazi">How it works</a>
+    </div>
+  </div>
+
+  <!-- The hero IS the product: a sample HarvestGuard result -->
+  <aside class="alert-card" aria-label="Sample HarvestGuard result">
+    <p class="alert-meta">Sample farmer, Eldoret · Tomatoes · 420 kg harvested</p>
+    <p class="alert-risk">High spoilage risk</p>
+    <div class="meter"><span style="width:82%"></span></div>
+    <p class="alert-loss">KES 20,640 <small>at risk</small></p>
+    <ul class="alert-why">
+      <li>Heavy rain forecast for 3 days</li>
+      <li>No cold storage on the farm</li>
+      <li>Nairobi market is 6 hours away</li>
+    </ul>
+    <p class="alert-action">SELL NOW at Eldoret market</p>
+  </aside>
+</section>
+
+<section class="strip">
+  <p><strong>The gap we close:</strong> weather apps tell farmers what the sky will do. Nobody tells them what to do with the harvest once it's picked.</p>
+</section>
+
+<section class="section" id="how">
+  <h2 data-sw="Jinsi inavyofanya kazi">How it works</h2>
+  <ol class="steps">
+    <li>
+      <h3 data-sw="Panga">Plan</h3>
+      <p data-sw="Weka eneo, aina ya udongo, maji na msimu. Pata mazao yanayofaa na wakati wa kupanda.">Enter location, soil, water and season. Get suitable crops and the best planting window.</p>
+    </li>
+    <li>
+      <h3 data-sw="Fuatilia hali ya hewa">Watch the weather</h3>
+      <p data-sw="Tunachambua mvua na joto, kisha tunakuonya kuhusu ukame au mvua kubwa.">We read rainfall and temperature and warn you about drought and heavy rain.</p>
+    </li>
+    <li>
+      <h3 data-sw="Vuna kwa wakati">Harvest on time</h3>
+      <p data-sw="Pata kipindi bora cha kuvuna na vidokezo vya kuongeza mavuno.">Get the best harvest period and tips to raise your yield.</p>
+    </li>
+    <li>
+      <h3 data-sw="Linda mavuno">Protect the harvest</h3>
+      <p data-sw="Tunakadiria hatari ya kuharibika, kiasi kilicho hatarini na hasara, kisha tunapendekeza hatua.">We predict spoilage, the quantity at risk and the loss, then recommend what to do.</p>
+    </li>
+  </ol>
+</section>
+
+<section class="section tint">
+  <h2 data-sw="Imetengenezwa kwa wakulima wa Kenya">Built for Kenyan farmers</h2>
+  <div class="grid">
+    <div class="feature"><h3>Local crops</h3><p>Maize, beans, tomatoes, potatoes, kale and avocados, with growing seasons across all 47 counties.</p></div>
+    <div class="feature"><h3>Shillings, not percentages</h3><p>Every risk comes with a KES figure so the decision is obvious.</p></div>
+    <div class="feature"><h3>Works on any phone</h3><p>Mobile-first pages today. SMS alerts for basic phones next.</p></div>
+    <div class="feature"><h3>Kiswahili</h3><p>Switch language from the top bar at any time.</p></div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <h2 data-sw="Ona ShambaShield ikilinda zao.">See ShambaShield protect a crop.</h2>
+  <a href="{{ url_for('register') }}" class="btn btn-accent" data-sw="Anza sasa">Get started</a>
+</section>
+{% endblock %}

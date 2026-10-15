@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "status": "DRAFT. Sensitivity scores and thresholds are starting assumptions written by the project author. They have NOT been validated. A KALRO researcher or county extension officer must review this file before real use.",
+    "last_reviewed": null,
+    "sources_to_check": [
+      "Kenya Meteorological Department (kmd.go.ke) for forecasts and seasonal outlooks",
+      "KALRO crop production guides",
+      "Kenya Agricultural Advisory Platform (KAAP)",
+      "FAO crop water requirement guidance"
+    ]
+  },
+  "thresholds": {"heavy_day_mm": 20, "heavy_week_mm": 60, "dry_week_mm": 10, "hot_day_c": 32},
+  "hazards": {
+    "waterlogging": {
+      "title": "Waterlogging",
+      "inspect": ["Standing water between rows", "Yellowing lower leaves", "Soft or discoloured roots and stem bases"],
+      "actions": ["Dig drainage channels along the low side of the field", "Avoid walking or working the field while it is wet", "Delay top-dressing fertiliser until water drains", "Ridge or mound rows if replanting is later needed"]
+    },
+    "drought": {
+      "title": "Dry spell",
+      "inspect": ["Leaf rolling or wilting in the afternoon", "Soil dryness 10 cm below the surface", "Stunted growth compared with neighbours"],
+      "actions": ["Water in the early morning or evening if you have a source", "Mulch with crop residue or dry grass", "Control weeds that compete for water", "Postpone planting or top-dressing until rain returns"]
+    },
+    "heat": {
+      "title": "Heat stress",
+      "inspect": ["Flower or fruit drop", "Scorched leaf edges", "Wilting during the hottest hours"],
+      "actions": ["Irrigate in the cool of the day", "Mulch to keep roots cooler", "Harvest early in the morning", "Provide shade for seedlings or nurseries if possible"]
+    }
+  },
+  "crops": {
+    "Maize": {"stages": [
+      {"name": "Germination and seedling", "from": 0, "to": 14, "waterlogging": 3, "drought": 2, "heat": 1},
+      {"name": "Vegetative growth", "from": 15, "to": 55, "waterlogging": 2, "drought": 2, "heat": 1},
+      {"name": "Tasselling and silking", "from": 56, "to": 80, "waterlogging": 2, "drought": 3, "heat": 3},
+      {"name": "Grain filling and drying", "from": 81, "to": 140, "waterlogging": 1, "drought": 2, "heat": 2}]},
+    "Beans": {"stages": [
+      {"name": "Germination and seedling", "from": 0, "to": 10, "waterlogging": 3, "drought": 2, "heat": 1},
+      {"name": "Vegetative growth", "from": 11, "to": 35, "waterlogging": 2, "drought": 2, "heat": 1},
+      {"name": "Flowering and pod set", "from": 36, "to": 60, "waterlogging": 2, "drought": 3, "heat": 3},
+      {"name": "Pod filling and maturity", "from": 61, "to": 100, "waterlogging": 1, "drought": 2, "heat": 2}]},
+    "Tomatoes": {"stages": [
+      {"name": "Establishment", "from": 0, "to": 20, "waterlogging": 3, "drought": 3, "heat": 2},
+      {"name": "Vegetative growth", "from": 21, "to": 45, "waterlogging": 3, "drought": 2, "heat": 2},
+      {"name": "Flowering and fruit set", "from": 46, "to": 70, "waterlogging": 3, "drought": 3, "heat": 3},
+      {"name": "Fruit ripening and harvest", "from": 71, "to": 120, "waterlogging": 2, "drought": 2, "heat": 2}]},
+    "Potatoes": {"stages": [
+      {"name": "Sprouting and emergence", "from": 0, "to": 20, "waterlogging": 3, "drought": 1, "heat": 1},
+      {"name": "Vegetative growth", "from": 21, "to": 45, "waterlogging": 2, "drought": 2, "heat": 2},
+      {"name": "Tuber bulking", "from": 46, "to": 75, "waterlogging": 3, "drought": 3, "heat": 2},
+      {"name": "Maturity", "from": 76, "to": 120, "waterlogging": 2, "drought": 1, "heat": 1}]},
+    "Kale": {"stages": [
+      {"name": "Seedling establishment", "from": 0, "to": 14, "waterlogging": 3, "drought": 3, "heat": 2},
+      {"name": "Leaf growth and picking", "from": 15, "to": 120, "waterlogging": 2, "drought": 2, "heat": 2}]}
+  }
+}

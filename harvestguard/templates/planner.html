@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Crop Planner · ShambaShield AI{% endblock %}
+{% block content %}
+<main class="page">
+  <h1 data-sw="Mpangaji wa Mazao">Crop Planner</h1>
+  <p class="muted">Tell us about your land and we'll rank the crops that suit it.</p>
+  <form method="post" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>Location
+      <select name="place">{% for p in places %}<option {{ 'selected' if p == default_place }}>{{ p }}</option>{% endfor %}</select></label>
+    <label>Soil type
+      <select name="soil"><option value="loam">Loam</option><option value="clay">Clay</option><option value="sandy">Sandy</option></select></label>
+    <label>Water available
+      <select name="water"><option value="rain-fed">Rain only</option><option value="borehole">Borehole</option><option value="irrigation">Irrigation</option></select></label>
+    <label>Season
+      <select name="season"><option>long rains</option><option>short rains</option><option>dry season</option></select></label>
+    <label class="full">Expected rainfall this season (mm)
+      <input type="number" name="rainfall" value="650" min="0" max="3000" required></label>
+    <button class="btn btn-primary">Recommend crops</button>
+  </form>
+
+  {% if result %}
+  <div class="result"><h2>Planting window: {{ result.window }}</h2>
+    <p class="muted">{{ result.place }}, {{ result.season }}</p></div>
+  {% for p in result.picks[:4] %}
+  <div class="result {{ 'risk-low' if p.score >= 70 else 'risk-medium' }}">
+    <span class="score">{{ p.score }}/100</span>
+    <h2>{{ p.crop.name }} <small class="muted">({{ p.crop.swahili_name }})</small></h2>
+    <p>Ready in about {{ p.crop.days_to_harvest }} days</p>
+    <ul>{% for n in p.notes %}<li>{{ n }}</li>{% endfor %}</ul>
+  </div>
+  {% endfor %}
+  {% endif %}
+</main>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · ShambaShield AI{% endblock %}
+{% block content %}
+<main class="dash">
+  <div class="dash-head">
+    <div><h1 data-sw="Habari">Hello, {{ farmer.full_name.split()[0] }}</h1>
+      <p class="muted">{{ farm.name }}, {{ farm.county }} County</p></div>
+    <a href="{{ url_for('guard') }}" class="btn btn-primary" data-sw="Ongeza mavuno">Add harvest</a>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><span class="kpi-label">Plantings tracked</span><span class="kpi-value">{{ plantings|length }}</span>
+      <span class="muted">{% if plantings %}Latest: {{ plantings[0].crop.name }}{% else %}None yet{% endif %}</span></div>
+    <div class="kpi {{ 'risk-red' if c.alerts[0][0] == 'high' else 'risk-amber' if c.alerts[0][0] == 'medium' }}">
+      <span class="kpi-label">Climate alert</span><span class="kpi-value" style="font-size:1.3rem">{{ c.alerts[0][1] }}</span>
+      <span class="muted">{{ c.total }} mm next 7 days</span></div>
+    <div class="kpi"><span class="kpi-label">High-risk harvests</span><span class="kpi-value">{{ high }}</span><span class="muted">Needs action</span></div>
+    <div class="kpi risk-red"><span class="kpi-label">Possible loss</span><span class="kpi-value">KES {{ '{:,}'.format(total_loss|int) }}</span><span class="muted">If nothing is done</span></div>
+  </div>
+
+  <div class="panels">
+    <section class="panel">
+      <h2>Spoilage risk</h2>
+      {% for r in rows %}
+      <div class="bar-row"><span>{{ r.crop }}</span>
+        <div class="bar"><i class="{{ {'high':'red','medium':'amber','low':'green'}[r.p.risk_level] }}" style="width:{{ r.p.spoilage_risk_pct }}%"></i></div>
+        <b>{{ r.p.spoilage_risk_pct|int }}%</b></div>
+      {% else %}<p class="muted">No harvests yet. Add one in Harvest Guard.</p>{% endfor %}
+    </section>
+    <section class="panel">
+      <h2>Rainfall next 7 days (mm)</h2>
+      <div class="chart" style="height:150px">
+        {% for d in range(7) %}<div><i style="height: {{ [c.rain[d] * 2, 100]|min }}%"></i><span>{{ c.days[d][-2:] }}</span></div>{% endfor %}
+      </div>
+    </section>
+    <section class="panel wide">
+      <h2>Recent predictions</h2>
+      <div class="table-wrap"><table>
+        <tr><th>Crop</th><th>Kg</th><th>Risk</th><th>Loss (KES)</th><th>Action</th></tr>
+        {% for r in rows %}
+        <tr><td>{{ r.crop }}</td><td>{{ r.qty|int }}</td>
+          <td><span class="pill {{ r.p.risk_level }}">{{ r.p.risk_level }}</span></td>
+          <td>{{ '{:,}'.format(r.p.estimated_loss_kes|int) }}</td>
+          <td><span class="badge">{{ r.p.recommendation|upper }}</span></td></tr>
+        {% endfor %}
+      </table></div>
+    </section>
+  </div>
+</main>
+{% endblock %}
